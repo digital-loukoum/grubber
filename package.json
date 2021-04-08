@@ -1,0 +1,29 @@
+{
+	"name": "parse-and-replace",
+	"version": "1.0.0",
+	"description": "Parse code files and patch it without having to use an AST",
+	"main": "library/index.js",
+	"scripts": {
+		"test": "esrun test"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/digital-loukoum/parse-and-replace.git"
+	},
+	"keywords": [
+		"parse",
+		"patch",
+		"find",
+		"replace",
+		"code"
+	],
+	"author": "Gin Quin",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/digital-loukoum/parse-and-replace/issues"
+	},
+	"homepage": "https://github.com/digital-loukoum/parse-and-replace#readme",
+	"dependencies": {
+		"@types/node": "^14.14.37"
+	}
+}
