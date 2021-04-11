@@ -1,15 +1,10 @@
 import Rule from "./Rule"
 import Parser from "./Parser"
-import languages from "./languages"
-
-type Language = keyof typeof languages
+import { LanguageName } from "./languages"
 
 /**
  * @return a Parser instance with which the user can execute find and replace operations
  */
-export function grub(content: string, rules: Rule[] | Language = "javascript") {
-	return new Parser(
-		content,
-		typeof rules == "string" ? new languages[rules]().rules : rules
-	)
+export function grub(content: string, rules: Rule[] | LanguageName = "ecmascript") {
+	return new Parser(content, rules)
 }

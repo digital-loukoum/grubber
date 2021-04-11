@@ -1,5 +1,6 @@
 import Rule, { MatchRule } from "./Rule"
 import Fragment from "./Fragment"
+import languages, { LanguageName } from "./languages"
 
 export type FromTo = {
 	from: string | RegExp
@@ -8,8 +9,18 @@ export type FromTo = {
 
 export default class Parser {
 	private stopExpressionCache = new Map<Rule, RegExp>()
+	private _rules: Rule[] = []
+	private language?: LanguageName
 
-	constructor(public content: string, public rules: Rule[]) {}
+	get rules(): Rule[] {
+		if (this.language) return new languages[this.language]().rules
+		return this._rules
+	}
+
+	constructor(public content: string, rules: LanguageName | Rule[]) {
+		if (typeof rules == "string") this.language = rules
+		else this._rules = rules
+	}
 
 	find(...expressions: Array<string | RegExp>): Fragment[] {
 		const result: Fragment[] = []
@@ -31,7 +42,7 @@ export default class Parser {
 					({
 						type: "match",
 						expression: from,
-						from: new RegExp(`^${from}$`),
+						from: new RegExp(`^${typeof from == "string" ? from : from.source}$`),
 						to,
 					} as Rule)
 			),
@@ -48,6 +59,22 @@ export default class Parser {
 		return result
 	}
 
+	findDependencies() {
+		if (!this.language) throw `[findDependencies] No language specified`
+		const importExpression = languages[this.language].importExpression
+		if (!importExpression)
+			throw `[findDependencies] No importExpression for language ${this.language}`
+		return this.find(importExpression)
+	}
+
+	replaceDependencies(to: string) {
+		if (!this.language) throw `[findDependencies] No language specified`
+		const importExpression = languages[this.language].importExpression
+		if (!importExpression)
+			throw `[findDependencies] No importExpression for language ${this.language}`
+		return this.replace({ from: importExpression, to })
+	}
+
 	private parse(rules: Rule[], onMatch: (fragment: Fragment, rule: MatchRule) => any) {
 		const nextMatch = this.getNextMatchExpression(rules)
 
@@ -60,7 +87,7 @@ export default class Parser {
 				console.warn("No stop found for rule", rule)
 				break
 			}
-			console.log("fragment:", fragment.slice)
+			// console.log("fragment:", fragment.slice)
 
 			nextMatch.lastIndex = fragment.end
 			if (rule.type == "match") onMatch(fragment, rule)

@@ -14,6 +14,8 @@ export default class Javascript implements Language {
 		this.backtickScope[this.backtickScope.length - 1] = value
 	}
 
+	static readonly importExpression = /import(?:\s+(?:({[\w$_\d\s,]+?})|([\w$_][\w$_\d]+?))\s+from)?\s+('|")(.+?)\3/
+
 	readonly rules: Rule[] = [
 		{
 			// single quote string
