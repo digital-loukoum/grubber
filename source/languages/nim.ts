@@ -2,7 +2,7 @@ import Language from "../Language"
 import Rule from "../Rule"
 
 export default class implements Language {
-	static readonly importExpression = /#include\s*"(.+?)"/g
+	static readonly importExpression = /^(?:(?:(from +(.*?) +)?(import) +(.*?))|(?:(include) +(.*?))) *$/gm
 
 	readonly rules: Rule[] = [
 		{
@@ -10,12 +10,12 @@ export default class implements Language {
 			expression: /".*?[^\\](?:\\\\)*"/,
 		},
 		{
-			// single line comment
-			expression: /\/\/.*?$/,
+			// multiline comment
+			expression: /#[.*?]#/,
 		},
 		{
-			// multiline comment
-			expression: /\/\*.*?\*\//,
+			// comment
+			expression: /#.*?$/,
 		},
 	]
 }

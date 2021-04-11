@@ -1,7 +1,7 @@
 import Language from "../Language"
 import Rule from "../Rule"
 
-export default class Javascript implements Language {
+export default class implements Language {
 	private backtickScope: number[] = []
 
 	private get backtickLevel() {
@@ -14,7 +14,7 @@ export default class Javascript implements Language {
 		this.backtickScope[this.backtickScope.length - 1] = value
 	}
 
-	static readonly importExpression = /import(?:\s+(?:({[\w$_\d\s,]+?})|([\w$_][\w$_\d]+?))\s+from)?\s+('|")(.+?)\3/
+	static readonly importExpression = /import(?:\s+(?:({[\w$_\d\s,]+?})|([\w$_][\w$_\d]+?))\s+from)?\s+('|")(.+?)\3/g
 
 	readonly rules: Rule[] = [
 		{
