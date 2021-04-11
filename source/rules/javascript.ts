@@ -1,23 +1,20 @@
 import Language from "../Language"
-
-class Scope {
-	brackets = 0 // brackets depth
-}
+import Rule from "../Rule"
 
 export default class Javascript implements Language {
-	scopes: Scope[] = [new Scope()]
+	private backtickScope: number[] = []
 
-	get scope() {
-		return this.scopes[this.scopes.length - 1]
+	private get backtickLevel() {
+		return this.backtickScope.length
 	}
-	get brackets() {
-		return this.scope.brackets
+	private get currentScope() {
+		return this.backtickScope[this.backtickScope.length - 1]
 	}
-	set brackets(value: number) {
-		this.scope.brackets = value
+	private set currentScope(value: number) {
+		this.backtickScope[this.backtickScope.length - 1] = value
 	}
 
-	readonly rules = [
+	readonly rules: Rule[] = [
 		{
 			// single quote string
 			expression: /'.*?[^\\](?:\\\\)*'/,
@@ -30,8 +27,26 @@ export default class Javascript implements Language {
 			// backtick string
 			startAt: /`|{|}/,
 			stopAt: /[^\\](?:\\\\)*(\${|`)/,
-			onStartMatch: () => {},
-			onStopMatch: () => {},
+			onStartMatch: match => {
+				if (match[0] == "{") {
+					if (this.backtickLevel) this.currentScope++
+					return false
+				} else if (match[0] == "}") {
+					if (this.backtickLevel) {
+						if (this.currentScope == 0) {
+							this.backtickScope.pop()
+							return true
+						}
+						this.currentScope--
+					}
+					return false
+				}
+				return true
+			},
+			onStopMatch: match => {
+				if (match[1] == "${") this.backtickScope.push(0)
+				return true
+			},
 		},
 		{
 			// single line comment

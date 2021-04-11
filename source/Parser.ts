@@ -103,9 +103,14 @@ export default class Parser {
 			if (ruleMatch && ruleMatch.index == 0 && ruleMatch[0].length == input.length) {
 				// console.log("Matching rule:", rule, ruleMatch)
 				if ("expression" in rule) {
-					if (rule.onExpressionMatch && !rule.onExpressionMatch(ruleMatch)) continue
+					if (
+						"onExpressionMatch" in rule &&
+						rule.onExpressionMatch &&
+						rule.onExpressionMatch(ruleMatch) === false
+					)
+						continue
 				} else {
-					if (rule.onStartMatch && !rule.onStartMatch(ruleMatch)) continue
+					if (rule.onStartMatch && rule.onStartMatch(ruleMatch) === false) continue
 				}
 				return [rule, ruleMatch]
 			}
@@ -128,7 +133,7 @@ export default class Parser {
 			nextStop.lastIndex = offset
 			let stop: null | RegExpExecArray
 			while ((stop = nextStop.exec(this.content))) {
-				if (!rule.onStopMatch || rule.onStopMatch(stop)) {
+				if (!rule.onStopMatch || rule.onStopMatch(stop) !== false) {
 					return new Fragment(this.content, start, stop.index + stop[0].length, groups)
 				}
 			}

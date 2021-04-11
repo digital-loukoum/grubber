@@ -8,12 +8,12 @@ export type MatchRule = {
 type Rule =
 	| MatchRule
 	| {
-			type: undefined
+			type?: undefined
 			expression: string | RegExp
 			onExpressionMatch?: (match: RegExpMatchArray) => boolean | void
 	  }
 	| {
-			type: undefined
+			type?: undefined
 			startAt: string | RegExp
 			stopAt: string | RegExp
 			onStartMatch?: (match: RegExpMatchArray) => boolean | void
