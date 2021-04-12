@@ -2,7 +2,7 @@ export default class Fragment {
 	slice: string
 
 	constructor(
-		public source: string,
+		source: string,
 		public start: number,
 		public end: number,
 		public groups: string[] = []
