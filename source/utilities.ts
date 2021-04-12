@@ -27,8 +27,10 @@ export function addJsExtensionToImportStatements(
 		console.log("path", path)
 
 		if (path != imported) {
-			const nodeModulesIndex = path.lastIndexOf("node_modules/")
-			if (~nodeModulesIndex) imported = path.slice(nodeModulesIndex + 1)
+			const nodeModulesDirectory = "node_modules/"
+			const nodeModulesIndex = path.lastIndexOf(nodeModulesDirectory)
+			if (~nodeModulesIndex)
+				imported = path.slice(nodeModulesIndex + nodeModulesDirectory.length)
 			else {
 				imported = relative(directory, path)
 				if (imported[0] != "." && imported[0] != "/") imported = "./" + imported
