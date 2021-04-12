@@ -29,7 +29,6 @@ export default class Parser {
 			...this.rules,
 		]
 		this.parse(rules, fragment => result.push(fragment))
-		console.log("RESULT:", result)
 		return result
 	}
 
@@ -55,7 +54,6 @@ export default class Parser {
 			offset = fragment.end
 		})
 		result += this.content.slice(offset)
-		console.log("RESULT:", result)
 		return result
 	}
 

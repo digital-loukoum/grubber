@@ -7,7 +7,7 @@ export default class implements Language {
 	readonly rules: Rule[] = [
 		{
 			// multi line string
-			expression: /""".*?[^\\](?:\\\\)*"""/,
+			expression: /"""((?:.|\s)*?)[^\\](?:\\\\)*"""/,
 		},
 		{
 			// single quote string
@@ -19,7 +19,7 @@ export default class implements Language {
 		},
 		{
 			// comment
-			expression: /#.*?$/,
+			expression: /#.*/,
 		},
 	]
 }

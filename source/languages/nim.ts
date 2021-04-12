@@ -11,11 +11,11 @@ export default class implements Language {
 		},
 		{
 			// multiline comment
-			expression: /#[.*?]#/,
+			expression: /#\[((?:.|\s)*?)\]#/,
 		},
 		{
 			// comment
-			expression: /#.*?$/,
+			expression: /#.*/,
 		},
 	]
 }

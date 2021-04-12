@@ -15,7 +15,7 @@ export default class implements Language {
 		},
 		{
 			// comment
-			expression: /\/\*.*?\*\//,
+			expression: /\/\*((?:.|\s)*?)\*\//,
 		},
 	]
 }

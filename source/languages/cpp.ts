@@ -2,7 +2,7 @@ import Language from "../Language"
 import Rule from "../Rule"
 
 export default class implements Language {
-	static readonly importExpression = /#include\s*(?:(".+?")|((<.+?>)))/g
+	static readonly importExpression = /#include\s*((?:".+?")|(?:<.+?>))/g
 
 	readonly rules: Rule[] = [
 		{
@@ -11,11 +11,11 @@ export default class implements Language {
 		},
 		{
 			// single line comment
-			expression: /\/\/.*?$/,
+			expression: /\/\/.*/,
 		},
 		{
 			// multiline comment
-			expression: /\/\*.*?\*\//,
+			expression: /\/\*((?:.|\s)*?)\*\//,
 		},
 	]
 }

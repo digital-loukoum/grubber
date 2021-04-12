@@ -1,7 +1,7 @@
-#include "foo.c"
-#include <bar>
-"#include \"foo.c\""
-// #include "foo.c"
+#include "foo"
+#include <foo>
+"#include \"bar\""
+// #include "bar"
 /*
-#include "foo.c"
+#include "bar"
 */
