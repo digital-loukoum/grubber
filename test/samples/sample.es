@@ -1,10 +1,10 @@
-import "foo"
+`${import zabu from "foo";}`
+import {coco} from "foo"
 import 'foo'
 'import "bar"' /*
 import "bar"
 */ // import "bar"
 `import "bar"`
-`${import "foo";}`
-// `${`import "bar"`}`
-// `${/* import "bar" */}`
-// `${`zabu ${import "bar";}`}`
+`${`import "bar"`}`
+`${/* import "bar" */}`
+`${`zabu ${import "foo";}`}`

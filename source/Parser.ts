@@ -163,7 +163,7 @@ export default class Parser {
 		if ("expression" in rule) return new Fragment(this.content, start, offset, groups)
 		else {
 			const nextStop = this.getRuleStopExpression(rule)
-			nextStop.lastIndex = offset
+			nextStop.lastIndex = offset - 1
 			let stop: null | RegExpExecArray
 			while ((stop = nextStop.exec(this.content))) {
 				if (!rule.onStopMatch || rule.onStopMatch(stop) !== false) {
