@@ -28,7 +28,6 @@ export default class implements Language {
 		{
 			// backtick string
 			startAt: /`|{|}/,
-			stopAt: /[^\\](?:\\\\)*(\${|`)/,
 			onStartMatch: match => {
 				if (match[0] == "{") {
 					if (this.backtickLevel) this.currentScope++
@@ -45,6 +44,8 @@ export default class implements Language {
 				}
 				return true
 			},
+
+			stopAt: /[^\\](?:\\\\)*(\${|`)/,
 			onStopMatch: match => {
 				if (match[1] == "${") this.backtickScope.push(0)
 				return true

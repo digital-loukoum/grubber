@@ -2,7 +2,7 @@ import Language from "../Language"
 import Rule from "../Rule"
 
 export default class implements Language {
-	static readonly importExpression = /@(import|use)\s*("|')(.+?)\1/g
+	static readonly importExpression = /@(import|use)\s*("|')(.+?)\2/g
 
 	readonly rules: Rule[] = [
 		{

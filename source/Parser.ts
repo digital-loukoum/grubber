@@ -78,7 +78,10 @@ export default class Parser {
 
 		let match: RegExpExecArray | null
 		while ((match = nextMatch.exec(this.content))) {
-			const [rule, ruleMatch] = this.getMatchingRule(rules, match)
+			const matchingRule = this.getMatchingRule(rules, match)
+			if (matchingRule == null) continue
+
+			const [rule, ruleMatch] = matchingRule
 			const fragment = this.resolveFragment(rule, match, ruleMatch.slice(1))
 			if (!fragment) {
 				// the fragment has no end (good chances it is a syntax error)
@@ -119,14 +122,15 @@ export default class Parser {
 	private getMatchingRule(
 		rules: Rule[],
 		match: RegExpExecArray
-	): [Rule, RegExpMatchArray] {
+	): [Rule, RegExpMatchArray] | null {
 		const [input] = match
-		// console.log("Get matching rule of:", input)
+		let noMatch = true
+		// console.log(`Get matching rule of: '${input}'`)
 		for (const rule of rules) {
 			const ruleExpression = this.getRuleExpression(rule)
 			const ruleMatch = input.match(ruleExpression)
 			if (ruleMatch && ruleMatch.index == 0 && ruleMatch[0].length == input.length) {
-				// console.log("Matching rule:", rule, ruleMatch)
+				noMatch = false
 				if ("expression" in rule) {
 					if (
 						"onExpressionMatch" in rule &&
@@ -140,7 +144,11 @@ export default class Parser {
 				return [rule, ruleMatch]
 			}
 		}
-		throw `[getMatchingRule] No rule matched`
+		if (noMatch) {
+			console.log("[getMatchingRule] No rules matched with match:", match)
+			throw `[getMatchingRule] No rules matched`
+		}
+		return null
 	}
 
 	private resolveFragment(
