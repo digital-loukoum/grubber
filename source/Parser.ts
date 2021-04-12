@@ -1,6 +1,6 @@
 import Rule, { MatchRule } from "./Rule"
 import Fragment from "./Fragment"
-import languages, { LanguageName } from "./languages"
+import languages, { LanguageName } from "./languages/index"
 
 export type FromTo = {
 	from: string | RegExp

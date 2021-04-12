@@ -1,0 +1,6 @@
+@import "foo";
+@use 'foo';
+/*
+@import "bar";
+*/
+"@import \"bar\";"

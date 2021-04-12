@@ -1,12 +1,12 @@
-import ecmascript from "./ecmascript"
+import ecmascript from "./es"
 import c from "./c"
 import cpp from "./cpp"
 import css from "./css"
 import scss from "./scss"
 import sass from "./sass"
 import nim from "./nim"
-import python from "./python"
-import rust from "./rust"
+import python from "./py"
+import rust from "./rs"
 
 const languages = {
 	ecmascript,
