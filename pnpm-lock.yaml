@@ -1,11 +1,19 @@
-dependencies:
-  '@types/node': 14.14.37
 devDependencies:
+  '@digitak/esrun': 1.0.8
+  '@types/node': 14.14.37
   fartest: 2.1.5
+  typescript: 4.2.4
 lockfileVersion: 5.2
 packages:
+  /@digitak/esrun/1.0.8:
+    dependencies:
+      esbuild: 0.8.57
+    dev: true
+    hasBin: true
+    resolution:
+      integrity: sha512-FHzC/qJoboXElHsUIHqKNIxsptJPC4q3peYSfPuIsk3868jPQfgAN6xrDAu1Q8P8uGEO51ZzI1TVqyc1OgA0kw==
   /@types/node/14.14.37:
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==
   /ansi-styles/3.2.1:
@@ -36,6 +44,12 @@ packages:
     dev: true
     resolution:
       integrity: sha1-p9BVi9icQveV3UIyj3QIMcpTvCU=
+  /esbuild/0.8.57:
+    dev: true
+    hasBin: true
+    requiresBuild: true
+    resolution:
+      integrity: sha512-j02SFrUwFTRUqiY0Kjplwjm1psuzO1d6AjaXKuOR9hrY0HuPsT6sV42B6myW34h1q4CRy+Y3g4RU/cGJeI/nNA==
   /escape-string-regexp/1.0.5:
     dev: true
     engines:
@@ -62,6 +76,15 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==
+  /typescript/4.2.4:
+    dev: true
+    engines:
+      node: '>=4.2.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-V+evlYHZnQkaz8TRBuxTA92yZBPotr5H+WhQ7bD3hZUndx5tGOa1fuCgeSjxAzM1RiN5IzvadIXTVefuuwZCRg==
 specifiers:
+  '@digitak/esrun': ^1.0.8
   '@types/node': ^14.14.37
   fartest: ^2.1.5
+  typescript: ^4.2.4

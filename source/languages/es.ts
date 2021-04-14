@@ -14,7 +14,7 @@ export default class implements Language {
 		this.backtickScope[this.backtickScope.length - 1] = value
 	}
 
-	static readonly importExpression = /import(?:\s+(.*?)\s+from)?\s+('|")(.+?)\2/g
+	static readonly importExpression = /\bimport(?:\s+([^;()[\]=/'"`+\-:.]+?)\s+from)?\s+('|")(.+?)\2/g
 
 	readonly rules: Rule[] = [
 		{

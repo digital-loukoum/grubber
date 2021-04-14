@@ -2,7 +2,7 @@ import Language from "../Language"
 import Rule from "../Rule"
 
 export default class implements Language {
-	static readonly importExpression = /^(?:(?:from +(.*?) +)?(import) +(.*?)) *(?:\bas +(.*?))? *$/gm
+	static readonly importExpression = /^(?:(?:\bfrom +(.*?) +)?(\bimport) +(.*?)) *(?:\bas +(.*?))? *$/gm
 
 	readonly rules: Rule[] = [
 		{
