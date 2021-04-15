@@ -1,5 +1,6 @@
 import Rule from "./Rule"
 import Parser from "./Parser"
+import Fragment from "./Fragment"
 import { LanguageName } from "./languages/index"
 
 /**
@@ -8,3 +9,5 @@ import { LanguageName } from "./languages/index"
 export function grub(content: string, rules: Rule[] | LanguageName = "es") {
 	return new Parser(content, rules)
 }
+
+export { Rule, LanguageName, Fragment, Parser }
