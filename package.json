@@ -1,5 +1,5 @@
 {
-	"name": "grubber",
+	"name": "@digitak/grubber",
 	"version": "1.0.0",
 	"description": "Parse code files and patch it without having to use an AST",
 	"main": "library",
