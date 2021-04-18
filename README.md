@@ -2,7 +2,7 @@
 
 In a higher level, Grubber also exposes helper functions to parse the dependencies of a file in many languages (Javascript, Typescript, Css, Scss, Python, Rust, C / C++, Nim, ...).
 
-### How?
+## How?
 
 The problem with parsing a source file with regular expressions is that you cannot be sure your match is not commented or inside a string.
 
@@ -25,7 +25,7 @@ Then you would match three `const` when only one should be matched.
 Grubber understands what is a string, what is a comment and what is code so that you can overcome the issue very easily:
 
 ```ts
-import { grub } from "grubber";
+import { grub } from "@digitak/grubber";
 
 const content = `
 const x = 12
@@ -38,6 +38,14 @@ console.log(results.length);  // will print 1 as expected
 ```
 
 > For the sake of the demonstration we used a simple regex, but remember that Ecmascript is a tricky language! Effectively finding all `const` statements would require a more refined regex. Ex: `foo.const = 12` would be matched. Languages that use semi-colon at the end of every statement or strict indentation are much easier to parse in a 100% safe way.
+
+## Installation
+
+Use your favorite package manager:
+
+```
+npm install @digitak/grubber
+```
 
 ## Grubber API
 
@@ -99,7 +107,7 @@ Example:
 
 ```ts
 // find all semi-colons inside the rust source code
-grubber(rustCodeToParse, "rs").find(";");
+grub(rustCodeToParse, "rs").find(";");
 ```
 
 
