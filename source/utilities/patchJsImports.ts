@@ -2,6 +2,7 @@ import { readdirSync, statSync, readFileSync, writeFileSync } from "fs"
 import addJsExtensions from "./addJsExtensions"
 import { relative, resolve as resolvePath } from "path"
 import { createRequire } from "module"
+import { AliasResolver, resolveAliases } from "./resolveAliases"
 
 const require = createRequire(process.cwd())
 const resolve = (dependency: string, directory: string) =>
@@ -15,18 +16,23 @@ const resolve = (dependency: string, directory: string) =>
  * (Love your work though, Typescript is an awesome language <3)
  * This utility function can be used after a Typescript compilation to add the mandatory '.js'
  */
-export default function patchJsImports(...directories: string[]) {
+export default function patchJsImports(
+	directories: string[],
+	aliases?: Array<AliasResolver>
+) {
 	for (let directory of directories) {
 		directory = resolvePath(directory)
 
 		for (const element of readdirSync(directory)) {
 			const entity = `${directory}/${element}`
 			if (statSync(entity).isDirectory()) {
-				patchJsImports(entity)
+				patchJsImports([entity], aliases)
 			} else {
 				const content = readFileSync(entity, "utf8")
 
 				const patchedContent = addJsExtensions(content, imported => {
+					let resolvedAlias = resolveAliases(imported, aliases)
+					if (resolvedAlias != null) return resolvedAlias
 					let path = resolve(imported, directory)
 
 					if (path != imported) {

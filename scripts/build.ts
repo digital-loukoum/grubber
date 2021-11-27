@@ -10,7 +10,7 @@ exec("node_modules/.bin/tsc", error => {
 	if (error) console.error(error)
 	else {
 		console.log("Patching imports...")
-		patchJsImports("library")
+		patchJsImports(["library"])
 		console.log("\nBuild done!")
 	}
 })
