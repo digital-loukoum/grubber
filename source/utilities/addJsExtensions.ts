@@ -18,7 +18,7 @@ export default function addJsExtensions(
 		if (patchedImport != imported) {
 			result +=
 				content.slice(offset, dependency.start) +
-				"import " +
+				(dependency.slice.startsWith("import") ? "import " : "export ") +
 				dependency.groups[0] +
 				" from " +
 				dependency.groups[1] +
