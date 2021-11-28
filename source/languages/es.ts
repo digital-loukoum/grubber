@@ -15,7 +15,7 @@ export default class implements Language {
 	}
 
 	static readonly importExpression =
-		/\bimport(?:\s+([^;()[\]=/'"`+\-:.]+?)\s+from)?\s+('|")(.+?)\2/g
+		/\b(?:import|export)(?:\s+([^;()[\]=/'"`+\-:.]+?)\s+from)?\s+('|")(.+?)\2/g
 
 	readonly rules: Rule[] = [
 		{
