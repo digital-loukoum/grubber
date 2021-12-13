@@ -1,8 +1,8 @@
-import { grub } from "../source/index"
+import { grub } from "../library/index"
 import { readFileSync, readdirSync } from "fs"
 import { extname } from "path"
 import start from "fartest"
-import { LanguageName } from "../source/languages/index"
+import { LanguageName } from "../library/languages/index"
 
 const occurences = (content: string, find: RegExp) => (content.match(find) || []).length
 
