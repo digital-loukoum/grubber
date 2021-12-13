@@ -9,8 +9,8 @@
 	"main": "library/index.js",
 	"exports": {
 		".": "./library/index.js",
-		"./*": "./library/*",
-		"./library/*": "./library/*"
+		"./library/*": "./library/*",
+		"./*": "./library/*"
 	},
 	"scripts": {
 		"test": "esrun test",
@@ -47,7 +47,7 @@
 	"homepage": "https://github.com/digital-loukoum/grubber#readme",
 	"dependencies": {},
 	"devDependencies": {
-		"@digitak/esrun": "^3.0.2",
+		"@digitak/esrun": "^3.0.3",
 		"@types/node": "^14.14.37",
 		"fartest": "^2.1.5",
 		"ncp": "^2.0.0",
