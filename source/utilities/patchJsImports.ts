@@ -38,8 +38,7 @@ export default function patchJsImports(
 					if (path != imported) {
 						const nodeModulesDirectory = "node_modules/"
 						const nodeModulesIndex = path.lastIndexOf(nodeModulesDirectory)
-						if (~nodeModulesIndex)
-							path = path.slice(nodeModulesIndex + nodeModulesDirectory.length)
+						if (~nodeModulesIndex) path = imported
 						else {
 							path = relative(directory, path)
 							if (path[0] != "." && path[0] != "/") path = "./" + path
