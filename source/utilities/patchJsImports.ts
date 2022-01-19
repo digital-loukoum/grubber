@@ -28,6 +28,9 @@ export default function patchJsImports(
 			if (statSync(entity).isDirectory()) {
 				patchJsImports([entity], aliases)
 			} else {
+				// only patch .js, .cjs and .mjs files
+				if (!element.match(/\.[mc]?js$/)) continue
+
 				const content = readFileSync(entity, "utf8")
 
 				const patchedContent = addJsExtensions(content, imported => {
