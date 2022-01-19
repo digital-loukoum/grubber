@@ -1,6 +1,6 @@
 {
 	"name": "@digitak/grubber",
-	"version": "3.1.0",
+	"version": "3.1.1",
 	"description": "Parse code files and patch it without having to use an AST",
 	"type": "module",
 	"files": [
