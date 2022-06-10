@@ -8,6 +8,8 @@ const require = createRequire(process.cwd())
 const resolve = (dependency: string, directory: string) =>
 	require.resolve(dependency, { paths: [directory] })
 
+const NODE_MODULES_DIRECTORY = "node_modules";
+
 /**
  * When Typescript compiles dependencies, it adds no '.js' extension at the end of imports.
  * The problem is: browser, Node and Deno all need this '.js' extension.
@@ -39,11 +41,10 @@ export default function patchJsImports(
 					let path = resolve(imported, directory)
 
 					if (path != imported) {
-						const nodeModulesDirectory = "node_modules/"
-						const nodeModulesIndex = path.lastIndexOf(nodeModulesDirectory)
+						const nodeModulesIndex = path.lastIndexOf(NODE_MODULES_DIRECTORY)
 						if (~nodeModulesIndex) path = imported
 						else {
-							path = relative(directory, path)
+							path = relative(directory, path).replace(/\\/g, "/");
 							if (path[0] != "." && path[0] != "/") path = "./" + path
 						}
 					}
