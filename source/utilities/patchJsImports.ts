@@ -12,7 +12,7 @@ const resolve = (dependency: string, directory: string) =>
 const relative = (directory: string, path: string) =>
 	relativePath(directory, path).split(sep).join(posix.sep); 
 
-const NODE_MODULES_DIR_TEST = /(^|\/)node_modules(\/|$)/;
+const NODE_MODULES_DIR_REGEX = /(^|\/)node_modules(\/|$)/;
 
 /**
  * When Typescript compiles dependencies, it adds no '.js' extension at the end of imports.
@@ -45,7 +45,7 @@ export default function patchJsImports(
 					let path = resolve(imported, directory);
 
 					if (path != imported) {
-						const isNodeModulePath = NODE_MODULES_DIR_TEST.test(path);
+						const isNodeModulePath = NODE_MODULES_DIR_REGEX.test(path);
 						if (isNodeModulePath) path = imported
 						else {
 							path = relative(directory, path);
