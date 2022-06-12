@@ -1,14 +1,18 @@
 import { readdirSync, statSync, readFileSync, writeFileSync } from "fs"
 import addJsExtensions from "./addJsExtensions"
-import { relative, resolve as resolvePath } from "path"
+import { relative as relativePath, resolve as resolvePath } from "path"
 import { createRequire } from "module"
 import { AliasResolver, resolveAliases } from "./resolveAliases"
 
 const require = createRequire(process.cwd())
-const resolve = (dependency: string, directory: string) =>
-	require.resolve(dependency, { paths: [directory] })
 
-const NODE_MODULES_DIRECTORY = "node_modules";
+const resolve = (dependency: string, directory: string) =>
+	require.resolve(dependency, { paths: [directory] }).replace(/\\/g, "/");
+
+const relative = (directory: string, path: string) =>
+	relativePath(directory, path).replace(/\\/g, "/"); 
+
+const NODE_MODULES_DIR_TEST = /(^|\/)node_modules(\/|$)/;
 
 /**
  * When Typescript compiles dependencies, it adds no '.js' extension at the end of imports.
@@ -38,13 +42,13 @@ export default function patchJsImports(
 				const patchedContent = addJsExtensions(content, imported => {
 					let resolvedAlias = resolveAliases(imported, aliases)
 					if (resolvedAlias != null) return resolvedAlias
-					let path = resolve(imported, directory)
+					let path = resolve(imported, directory);
 
 					if (path != imported) {
-						const nodeModulesIndex = path.lastIndexOf(NODE_MODULES_DIRECTORY)
-						if (~nodeModulesIndex) path = imported
+						const isNodeModulePath = NODE_MODULES_DIR_TEST.test(path);
+						if (isNodeModulePath) path = imported
 						else {
-							path = relative(directory, path).replace(/\\/g, "/");
+							path = relative(directory, path);
 							if (path[0] != "." && path[0] != "/") path = "./" + path
 						}
 					}
