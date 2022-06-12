@@ -1,16 +1,16 @@
 import { readdirSync, statSync, readFileSync, writeFileSync } from "fs"
 import addJsExtensions from "./addJsExtensions"
-import { relative as relativePath, resolve as resolvePath } from "path"
+import { relative as relativePath, resolve as resolvePath, sep, posix } from "path"
 import { createRequire } from "module"
 import { AliasResolver, resolveAliases } from "./resolveAliases"
 
 const require = createRequire(process.cwd())
 
 const resolve = (dependency: string, directory: string) =>
-	require.resolve(dependency, { paths: [directory] }).replace(/\\/g, "/");
+	require.resolve(dependency, { paths: [directory] }).split(sep).join(posix.sep);
 
 const relative = (directory: string, path: string) =>
-	relativePath(directory, path).replace(/\\/g, "/"); 
+	relativePath(directory, path).split(sep).join(posix.sep); 
 
 const NODE_MODULES_DIR_TEST = /(^|\/)node_modules(\/|$)/;
 
