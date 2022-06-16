@@ -1,7 +1,0 @@
-lockfileVersion: 5.4
-
-specifiers:
-  '@digitak/grubber': link:..
-
-dependencies:
-  '@digitak/grubber': link:..

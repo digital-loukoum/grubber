@@ -1,8 +1,8 @@
-import { grub } from "@digitak/grubber"
+import { grub } from "../source"
 import { readFileSync, readdirSync } from "fs"
 import { extname } from "path"
 import start from "fartest"
-import { LanguageName } from "../library/languages/index"
+import { LanguageName } from "../source/languages"
 
 const occurences = (content: string, find: RegExp) => (content.match(find) || []).length
 

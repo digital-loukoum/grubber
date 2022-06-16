@@ -1,8 +1,9 @@
-import Language from "../Language"
-import Rule from "../Rule"
+import Language from "../Language.js"
+import Rule from "../Rule.js"
 
 export default class implements Language {
-	static readonly importExpression = /^(?:(?:\bfrom +(.*?) +)?(\bimport) +(.*?)) *(?:\bas +(.*?))? *$/gm
+	static readonly importExpression =
+		/^(?:(?:\bfrom +(.*?) +)?(\bimport) +(.*?)) *(?:\bas +(.*?))? *$/gm
 
 	readonly rules: Rule[] = [
 		{

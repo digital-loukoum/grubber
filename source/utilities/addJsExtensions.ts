@@ -1,4 +1,4 @@
-import Parser from "../Parser"
+import Parser from "../Parser.js"
 // import { createRequire } from "module"
 
 /**

@@ -1,12 +1,12 @@
-import es from "./es"
-import c from "./c"
-import cpp from "./cpp"
-import css from "./css"
-import scss from "./scss"
-import sass from "./sass"
-import nim from "./nim"
-import py from "./py"
-import rs from "./rs"
+import es from "./es.js"
+import c from "./c.js"
+import cpp from "./cpp.js"
+import css from "./css.js"
+import scss from "./scss.js"
+import sass from "./sass.js"
+import nim from "./nim.js"
+import py from "./py.js"
+import rs from "./rs.js"
 
 const languages = {
 	es,
