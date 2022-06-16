@@ -1,4 +1,4 @@
-import { grub } from "../library/index"
+import { grub } from "@digitak/grubber"
 import { readFileSync, readdirSync } from "fs"
 import { extname } from "path"
 import start from "fartest"
