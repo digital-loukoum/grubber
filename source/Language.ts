@@ -1,7 +1,7 @@
-import Rule from "./Rule.js"
+import Rule from "./Rule.js";
 
 type Language = {
 	readonly rules: Rule[]
-}
+};
 
-export default Language
+export default Language;

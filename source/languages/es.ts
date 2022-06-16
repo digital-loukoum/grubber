@@ -1,21 +1,21 @@
-import Language from "../Language.js"
-import Rule from "../Rule.js"
+import Language from "../Language.js";
+import Rule from "../Rule.js";
 
 export default class implements Language {
-	private backtickScope: number[] = []
+	private backtickScope: number[] = [];
 
 	private get backtickLevel() {
-		return this.backtickScope.length
+		return this.backtickScope.length;
 	}
 	private get currentScope() {
-		return this.backtickScope[this.backtickScope.length - 1]
+		return this.backtickScope[this.backtickScope.length - 1];
 	}
 	private set currentScope(value: number) {
-		this.backtickScope[this.backtickScope.length - 1] = value
+		this.backtickScope[this.backtickScope.length - 1] = value;
 	}
 
 	static readonly importExpression =
-		/\b(?:import|export)(?:\s+([^;()[\]=/'"`+\-:.]+?)\s+from)?\s+('|")(.+?)\2/g
+		/\b(?:import|export)(?:\s+([^;()[\]=/'"`+\-:.]+?)\s+from)?\s+('|")(.+?)\2/g;
 
 	readonly rules: Rule[] = [
 		{
@@ -31,25 +31,26 @@ export default class implements Language {
 			startAt: /`|{|}/,
 			onStartMatch: match => {
 				if (match[0] == "{") {
-					if (this.backtickLevel) this.currentScope++
-					return false
-				} else if (match[0] == "}") {
+					if (this.backtickLevel) this.currentScope++;
+					return false;
+				}
+				else if (match[0] == "}") {
 					if (this.backtickLevel) {
 						if (this.currentScope == 0) {
-							this.backtickScope.pop()
-							return true
+							this.backtickScope.pop();
+							return true;
 						}
-						this.currentScope--
+						this.currentScope--;
 					}
-					return false
+					return false;
 				}
-				return true
+				return true;
 			},
 
 			stopAt: /[^\\](?:\\\\)*(\${|`)/,
 			onStopMatch: match => {
-				if (match[1] == "${") this.backtickScope.push(0)
-				return true
+				if (match[1] == "${") this.backtickScope.push(0);
+				return true;
 			},
 		},
 		{
@@ -64,5 +65,5 @@ export default class implements Language {
 			// regular expression
 			expression: /[=,;?(\n]\s*\/.*?[^\\](?:\\\\)*\//,
 		},
-	]
+	];
 }
