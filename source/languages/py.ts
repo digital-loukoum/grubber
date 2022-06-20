@@ -1,9 +1,9 @@
-import Language from "../Language.js"
-import Rule from "../Rule.js"
+import Language from "../Language.js";
+import Rule from "../Rule.js";
 
 export default class implements Language {
 	static readonly importExpression =
-		/^(?:(?:\bfrom +(.*?) +)?(\bimport) +(.*?)) *(?:\bas +(.*?))? *$/gm
+		/^(?:(?:\bfrom +(.*?) +)?(\bimport) +(.*?)) *(?:\bas +(.*?))? *$/gm;
 
 	readonly rules: Rule[] = [
 		{
@@ -22,5 +22,5 @@ export default class implements Language {
 			// comment
 			expression: /#.*/,
 		},
-	]
+	];
 }

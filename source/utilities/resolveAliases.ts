@@ -1,7 +1,7 @@
 export type AliasResolver = {
 	find: RegExp
 	replacement: string | null
-}
+};
 
 export function resolveAliases(
 	path: string,
@@ -10,10 +10,10 @@ export function resolveAliases(
 	if (aliases) {
 		for (const { find, replacement } of aliases) {
 			if (find.test(path)) {
-				if (replacement) return path.replace(find, replacement)
-				else return path
+				if (replacement) return path.replace(find, replacement);
+				else return path;
 			}
 		}
 	}
-	return null
+	return null;
 }

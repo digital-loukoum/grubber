@@ -1,8 +1,8 @@
-import Language from "../Language.js"
-import Rule from "../Rule.js"
+import Language from "../Language.js";
+import Rule from "../Rule.js";
 
 export default class implements Language {
-	static readonly importExpression = /@import\s+("|')(.+?)\1/g
+	static readonly importExpression = /@import\s+("|')(.+?)\1/g;
 
 	readonly rules: Rule[] = [
 		{
@@ -17,5 +17,5 @@ export default class implements Language {
 			// comment
 			expression: /\/\*((?:.|\s)*?)\*\//,
 		},
-	]
+	];
 }

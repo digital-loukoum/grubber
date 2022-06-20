@@ -1,21 +1,21 @@
-import { readdirSync, statSync, readFileSync, writeFileSync } from "fs"
-import addJsExtensions from "./addJsExtensions.js"
-import { relative as relativePath, resolve as resolvePath, sep, posix } from "path"
-import { createRequire } from "module"
-import { AliasResolver, resolveAliases } from "./resolveAliases.js"
+import { readdirSync, statSync, readFileSync, writeFileSync } from "fs";
+import addJsExtensions from "./addJsExtensions.js";
+import { relative as relativePath, resolve as resolvePath, sep, posix } from "path";
+import { createRequire } from "module";
+import { AliasResolver, resolveAliases } from "./resolveAliases.js";
 
-const require = createRequire(process.cwd())
+const require = createRequire(process.cwd());
 
 const resolve = (dependency: string, directory: string) =>
 	require
 		.resolve(dependency, { paths: [directory] })
 		.split(sep)
-		.join(posix.sep)
+		.join(posix.sep);
 
 const relative = (directory: string, path: string) =>
-	relativePath(directory, path).split(sep).join(posix.sep)
+	relativePath(directory, path).split(sep).join(posix.sep);
 
-const NODE_MODULES_DIR_REGEX = /(^|\/)node_modules(\/|$)/
+const NODE_MODULES_DIR_REGEX = /(^|\/)node_modules(\/|$)/;
 
 /**
  * When Typescript compiles dependencies, it adds no '.js' extension at the end of imports.
@@ -30,36 +30,37 @@ export default function patchJsImports(
 	aliases?: Array<AliasResolver>
 ) {
 	for (let directory of directories) {
-		directory = resolvePath(directory)
+		directory = resolvePath(directory);
 
 		for (const element of readdirSync(directory)) {
-			const entity = `${directory}/${element}`
+			const entity = `${directory}/${element}`;
 			if (statSync(entity).isDirectory()) {
-				patchJsImports([entity], aliases)
-			} else {
+				patchJsImports([entity], aliases);
+			}
+			else {
 				// only patch .js, .cjs and .mjs files
-				if (!element.match(/\.[mc]?js$/)) continue
+				if (!element.match(/\.[mc]?js$/)) continue;
 
-				const content = readFileSync(entity, "utf8")
+				const content = readFileSync(entity, "utf8");
 
 				const patchedContent = addJsExtensions(content, imported => {
-					let resolvedAlias = resolveAliases(imported, aliases)
-					if (resolvedAlias != null) return resolvedAlias
-					let path = resolve(imported, directory)
+					const resolvedAlias = resolveAliases(imported, aliases);
+					if (resolvedAlias != null) return resolvedAlias;
+					let path = resolve(imported, directory);
 
 					if (path != imported) {
-						const isNodeModulePath = NODE_MODULES_DIR_REGEX.test(path)
-						if (isNodeModulePath) path = imported
+						const isNodeModulePath = NODE_MODULES_DIR_REGEX.test(path);
+						if (isNodeModulePath) path = imported;
 						else {
-							path = relative(directory, path)
-							if (path[0] != "." && path[0] != "/") path = "./" + path
+							path = relative(directory, path);
+							if (path[0] != "." && path[0] != "/") path = "./" + path;
 						}
 					}
 
-					return path
-				})
+					return path;
+				});
 
-				writeFileSync(entity, patchedContent)
+				writeFileSync(entity, patchedContent);
 			}
 		}
 	}
