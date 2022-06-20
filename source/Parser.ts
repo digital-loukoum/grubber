@@ -3,8 +3,8 @@ import Fragment from "./Fragment.js";
 import languages, { LanguageName } from "./languages/index.js";
 
 export type FromTo = {
-	from: string | RegExp
-	to: string | RegExp
+	from: string | RegExp;
+	to: string | RegExp;
 };
 
 export default class Parser {
@@ -41,16 +41,22 @@ export default class Parser {
 					({
 						type: "match",
 						expression: from,
-						from: new RegExp(`^${typeof from == "string" ? from : from.source}$`),
+						from: new RegExp(
+							`^${typeof from == "string" ? from : from.source}$`,
+						),
 						to,
-					} as Rule)
+					} as Rule),
 			),
 			...this.rules,
 		];
 
 		this.parse(rules, (fragment, rule) => {
 			result += this.content.slice(offset, fragment.start);
-			result += fragment.slice.replace(rule.from!, rule.to!);
+			if (rule.from !== undefined && rule.to !== undefined) {
+				result += fragment.slice.replace(rule.from, rule.to);
+			} else {
+				result += fragment.slice;
+			}
 			offset = fragment.end;
 		});
 		result += this.content.slice(offset);
@@ -73,7 +79,10 @@ export default class Parser {
 		return this.replace({ from: importExpression, to });
 	}
 
-	private parse(rules: Rule[], onMatch: (fragment: Fragment, rule: MatchRule) => any) {
+	private parse(
+		rules: Rule[],
+		onMatch: (fragment: Fragment, rule: MatchRule) => unknown,
+	) {
 		const nextMatch = this.getNextMatchExpression(rules);
 
 		let match: RegExpExecArray | null;
@@ -103,10 +112,11 @@ export default class Parser {
 	private getRuleStopExpression(rule: Rule): RegExp {
 		let expression = this.stopExpressionCache.get(rule);
 		if (expression) return expression;
-		if ("expression" in rule) throw "A standalone expression has no stop delimiter";
+		if ("expression" in rule)
+			throw "A standalone expression has no stop delimiter";
 		expression = new RegExp(
 			typeof rule.stopAt == "string" ? rule.stopAt : rule.stopAt.source,
-			"gm"
+			"gm",
 		);
 		this.stopExpressionCache.set(rule, expression);
 		return expression;
@@ -115,13 +125,13 @@ export default class Parser {
 	private getNextMatchExpression(rules: Rule[]): RegExp {
 		return new RegExp(
 			rules.map(rule => "(?:" + this.getRuleExpression(rule) + ")").join("|"),
-			"gm"
+			"gm",
 		);
 	}
 
 	private getMatchingRule(
 		rules: Rule[],
-		match: RegExpExecArray
+		match: RegExpExecArray,
 	): [Rule, RegExpMatchArray] | null {
 		const [input] = match;
 		let noMatch = true;
@@ -129,18 +139,23 @@ export default class Parser {
 		for (const rule of rules) {
 			const ruleExpression = this.getRuleExpression(rule);
 			const ruleMatch = input.match(ruleExpression);
-			if (ruleMatch && ruleMatch.index == 0 && ruleMatch[0].length == input.length) {
+			if (
+				ruleMatch &&
+				ruleMatch.index == 0 &&
+				ruleMatch[0].length == input.length
+			) {
 				noMatch = false;
 				if ("expression" in rule) {
 					if (
 						"onExpressionMatch" in rule &&
 						rule.onExpressionMatch &&
 						rule.onExpressionMatch(ruleMatch) === false
-					)
+					) {
 						continue;
-				}
-				else {
-					if (rule.onStartMatch && rule.onStartMatch(ruleMatch) === false) continue;
+					}
+				} else {
+					if (rule.onStartMatch && rule.onStartMatch(ruleMatch) === false)
+						continue;
 				}
 				return [rule, ruleMatch];
 			}
@@ -155,20 +170,26 @@ export default class Parser {
 	private resolveFragment(
 		rule: Rule,
 		match: RegExpMatchArray,
-		groups: string[] = []
+		groups: string[] = [],
 	): Fragment | null {
 		const start = match.index as number;
 		const input = match[0];
 		const offset = start + input.length;
 
-		if ("expression" in rule) return new Fragment(this.content, start, offset, groups);
+		if ("expression" in rule)
+			return new Fragment(this.content, start, offset, groups);
 		else {
 			const nextStop = this.getRuleStopExpression(rule);
 			nextStop.lastIndex = offset - 1;
 			let stop: null | RegExpExecArray;
 			while ((stop = nextStop.exec(this.content))) {
 				if (!rule.onStopMatch || rule.onStopMatch(stop) !== false) {
-					return new Fragment(this.content, start, stop.index + stop[0].length, groups);
+					return new Fragment(
+						this.content,
+						start,
+						stop.index + stop[0].length,
+						groups,
+					);
 				}
 			}
 			return null;
