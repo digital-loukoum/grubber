@@ -18,12 +18,8 @@ export default function addJsExtensions(
 		if (patchedImport != imported) {
 			result +=
 				content.slice(offset, dependency.start) +
-				(dependency.slice.startsWith("import") ? "import " : "export ") +
-				dependency.groups[0] +
-				" from " +
-				dependency.groups[1] +
-				patchedImport +
-				dependency.groups[1];
+				dependency.slice.replace(imported, patchedImport);
+
 			offset = dependency.end;
 		}
 	}
