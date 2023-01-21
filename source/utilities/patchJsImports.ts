@@ -48,12 +48,12 @@ export default function patchJsImports(
 					if (resolvedAlias != null) return resolvedAlias;
 					let path = resolve(imported, directory);
 
-					if (path != imported) {
+					if (path !== imported) {
 						const isNodeModulePath = NODE_MODULES_DIR_REGEX.test(path);
 						if (isNodeModulePath) path = imported;
 						else {
 							path = relative(directory, path);
-							if (path[0] != "." && path[0] != "/") path = "./" + path;
+							if (path[0] !== "." && path[0] !== "/") path = `./${path}`;
 						}
 					}
 

@@ -1,6 +1,6 @@
 {
 	"name": "@digitak/grubber",
-	"version": "3.1.2",
+	"version": "3.1.3",
 	"description": "Parse code files and patch it without having to use an AST",
 	"type": "module",
 	"main": "index.js",
@@ -12,7 +12,6 @@
 		"test": "esrun test",
 		"test:jsimports": "esrun test/patchJsImports",
 		"build": "esrun scripts/build",
-		"deploy": "yarn build && yarn test && yarn publish --cwd package",
 		"lint": "eslint source",
 		"lint:fix": "eslint source --fix"
 	},

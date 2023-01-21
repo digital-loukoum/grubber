@@ -29,14 +29,13 @@ export default class implements Language {
 		{
 			// backtick string
 			startAt: /`|{|}/,
-			onStartMatch: match => {
-				if (match[0] == "{") {
+			onStartMatch: (match) => {
+				if (match[0] === "{") {
 					if (this.backtickLevel) this.currentScope++;
 					return false;
-				}
-				else if (match[0] == "}") {
+				} else if (match[0] === "}") {
 					if (this.backtickLevel) {
-						if (this.currentScope == 0) {
+						if (this.currentScope === 0) {
 							this.backtickScope.pop();
 							return true;
 						}
@@ -48,8 +47,8 @@ export default class implements Language {
 			},
 
 			stopAt: /[^\\](?:\\\\)*(\${|`)/,
-			onStopMatch: match => {
-				if (match[1] == "${") this.backtickScope.push(0);
+			onStopMatch: (match) => {
+				if (match[1] === "${") this.backtickScope.push(0);
 				return true;
 			},
 		},
@@ -63,7 +62,7 @@ export default class implements Language {
 		},
 		{
 			// regular expression
-			expression: /[=,;?(\n]\s*\/.*?[^\\](?:\\\\)*\//,
+			expression: /[=,;?(\n]\s*\/[^/*].*?[^\\](?:\\\\)*\//,
 		},
 	];
 }

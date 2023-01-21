@@ -1,6 +1,7 @@
 import Rule, { MatchRule } from "./Rule.js";
 import Fragment from "./Fragment.js";
 import languages, { LanguageName } from "./languages/index.js";
+import { Match } from "./Match.js";
 
 export type FromTo = {
 	from: string | RegExp;
@@ -18,17 +19,19 @@ export default class Parser {
 	}
 
 	constructor(public content: string, rules: LanguageName | Rule[]) {
-		if (typeof rules == "string") this.language = rules;
+		if (typeof rules === "string") this.language = rules;
 		else this._rules = rules;
 	}
 
 	find(...expressions: Array<string | RegExp>): Fragment[] {
 		const result: Fragment[] = [];
 		const rules: Rule[] = [
-			...expressions.map(expression => ({ type: "match", expression } as Rule)),
+			...expressions.map(
+				(expression) => ({ type: "match", expression }) as Rule,
+			),
 			...this.rules,
 		];
-		this.parse(rules, fragment => result.push(fragment));
+		this.parse(rules, (fragment) => result.push(fragment));
 		return result;
 	}
 
@@ -42,10 +45,10 @@ export default class Parser {
 						type: "match",
 						expression: from,
 						from: new RegExp(
-							`^${typeof from == "string" ? from : from.source}$`,
+							`^${typeof from === "string" ? from : from.source}$`,
 						),
 						to,
-					} as Rule),
+					}) as Rule,
 			),
 			...this.rules,
 		];
@@ -100,13 +103,13 @@ export default class Parser {
 			// console.log("fragment:", fragment.slice)
 
 			nextMatch.lastIndex = fragment.end;
-			if (rule.type == "match") onMatch(fragment, rule);
+			if (rule.type === "match") onMatch(fragment, rule);
 		}
 	}
 
 	private getRuleExpression(rule: Rule): string {
 		const expression = "expression" in rule ? rule.expression : rule.startAt;
-		return typeof expression == "string" ? expression : expression.source;
+		return typeof expression === "string" ? expression : expression.source;
 	}
 
 	private getRuleStopExpression(rule: Rule): RegExp {
@@ -115,7 +118,7 @@ export default class Parser {
 		if ("expression" in rule)
 			throw "A standalone expression has no stop delimiter";
 		expression = new RegExp(
-			typeof rule.stopAt == "string" ? rule.stopAt : rule.stopAt.source,
+			typeof rule.stopAt === "string" ? rule.stopAt : rule.stopAt.source,
 			"gm",
 		);
 		this.stopExpressionCache.set(rule, expression);
@@ -124,15 +127,12 @@ export default class Parser {
 
 	private getNextMatchExpression(rules: Rule[]): RegExp {
 		return new RegExp(
-			rules.map(rule => "(?:" + this.getRuleExpression(rule) + ")").join("|"),
+			rules.map((rule) => `(?:${this.getRuleExpression(rule)})`).join("|"),
 			"gm",
 		);
 	}
 
-	private getMatchingRule(
-		rules: Rule[],
-		match: RegExpExecArray,
-	): [Rule, RegExpMatchArray] | null {
+	private getMatchingRule(rules: Rule[], match: Match): [Rule, Match] | null {
 		const [input] = match;
 		let noMatch = true;
 		// console.log(`Get matching rule of: '${input}'`)
@@ -141,8 +141,8 @@ export default class Parser {
 			const ruleMatch = input.match(ruleExpression);
 			if (
 				ruleMatch &&
-				ruleMatch.index == 0 &&
-				ruleMatch[0].length == input.length
+				ruleMatch.index === 0 &&
+				ruleMatch[0].length === input.length
 			) {
 				noMatch = false;
 				if ("expression" in rule) {
@@ -169,7 +169,7 @@ export default class Parser {
 
 	private resolveFragment(
 		rule: Rule,
-		match: RegExpMatchArray,
+		match: RegExpExecArray,
 		groups: string[] = [],
 	): Fragment | null {
 		const start = match.index as number;

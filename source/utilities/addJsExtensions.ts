@@ -6,7 +6,7 @@ import Parser from "../Parser.js";
  */
 export default function addJsExtensions(
 	content: string,
-	resolve: (imported: string) => string
+	resolve: (imported: string) => string,
 ): string {
 	const dependencies = new Parser(content, "es").findDependencies();
 	let result = "";
@@ -15,15 +15,10 @@ export default function addJsExtensions(
 	for (const dependency of dependencies) {
 		const imported = dependency.groups[2].trim();
 		const patchedImport = resolve(imported);
-		if (patchedImport != imported) {
+		if (patchedImport !== imported) {
 			result +=
 				content.slice(offset, dependency.start) +
-				(dependency.slice.startsWith("import") ? "import " : "export ") +
-				dependency.groups[0] +
-				" from " +
-				dependency.groups[1] +
-				patchedImport +
-				dependency.groups[1];
+				dependency.slice.replace(imported, patchedImport);
 			offset = dependency.end;
 		}
 	}
