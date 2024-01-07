@@ -1,4 +1,4 @@
-**_Grubber_** is a lightweight and friendly utility to parse code without regular expressions in a 100% safe way - without having to use an AST 🐛
+**_Grubber_** is a lightweight and friendly utility to parse code with regular expressions in a 100% safe way - without having to use an AST 🐛
 
 In a higher level, Grubber also exposes helper functions to parse the dependencies of a file in many languages (Javascript, Typescript, Css, Scss, Python, Rust, C / C++, Nim, ...).
 
